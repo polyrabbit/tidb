@@ -34,7 +34,6 @@ var vecBuiltinCastCases = map[string][]vecExprBenchCase{
 				fsp:          1,
 			}},
 		},
-		{retEvalType: types.ETDecimal, childrenTypes: []types.EvalType{types.ETDatetime}},
 	},
 }
 

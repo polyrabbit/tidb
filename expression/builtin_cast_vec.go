@@ -170,35 +170,11 @@ func (b *builtinCastDecimalAsStringSig) vecEvalString(input *chunk.Chunk, result
 }
 
 func (b *builtinCastTimeAsDecimalSig) vectorized() bool {
-	return true
+	return false
 }
 
 func (b *builtinCastTimeAsDecimalSig) vecEvalDecimal(input *chunk.Chunk, result *chunk.Column) error {
-	n := input.NumRows()
-	buf, err := b.bufAllocator.get(types.ETDatetime, n)
-	if err != nil {
-		return err
-	}
-	defer b.bufAllocator.put(buf)
-	if err := b.args[0].VecEvalTime(b.ctx, input, buf); err != nil {
-		return err
-	}
-	result.ResizeDecimal(n, false)
-	result.MergeNulls(buf)
-	times := buf.Times()
-	decs := result.Decimals()
-	sc := b.ctx.GetSessionVars().StmtCtx
-	for i := 0; i < n; i++ {
-		if result.IsNull(i) {
-			continue
-		}
-		decimalValue, err := types.ProduceDecWithSpecifiedTp(times[i].ToNumber(), b.tp, sc)
-		if err != nil {
-			return err
-		}
-		decs[i] = *decimalValue
-	}
-	return nil
+	return errors.Errorf("not implemented")
 }
 
 func (b *builtinCastDurationAsIntSig) vectorized() bool {
